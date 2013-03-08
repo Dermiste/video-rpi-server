@@ -38,11 +38,10 @@ app.get('/hub/list',hub.list);
 var socket = ioSocket.listen(3001);
 
 socket.notifyNumUserChanged = function(){
-	var i =  0;
-	for (var o in socket.open){
-		i++;
-	}
-	socket.sockets.in('rpi').emit('numUserChanged',{numUsers:i});
+	var totalClients = socket.rooms['/rpi'] ? socket.rooms['/rpi'].length : 0;
+	
+	socket.sockets.in('rpi').emit('numUserChanged',{numUsers:totalClients});
+	socket.sockets.in('admin').emit('numUserChanged',{numUsers:totalClients});
 }
 
 socket.playEverywhere = function(){
@@ -60,6 +59,7 @@ socket.sockets.on('connection', function (skt) {
 	});	
 	
 	skt.on('joinRoom', function (data) {	
+		//console.log("app.js a client just joined the "+data.room+" room");
 		skt.join(data.room);
 		socket.notifyNumUserChanged();
 	});		

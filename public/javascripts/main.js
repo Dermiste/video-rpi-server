@@ -6,7 +6,11 @@ $(document).ready(function(){
 	});	
 	socket.on('connect',function(data){
 		//console.log('join room');
-		socket.emit('joinRoom',{room:'rpi'});
+		var random = Math.random();
+		if (random > 0.5)
+			socket.emit('joinRoom',{room:'rpi'});
+		else
+			socket.emit('joinRoom',{room:'admin'});
 	});		
 	socket.on('play',function(data){
 		console.log('play received');
