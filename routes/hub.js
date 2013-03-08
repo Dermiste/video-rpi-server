@@ -4,7 +4,7 @@
 
 exports.list = function(req, res){
 
-	var ipAddress;
+	var ip;
 	var os=require('os');
 	var ifaces=os.networkInterfaces();
 	for (var dev in ifaces) {
@@ -18,5 +18,5 @@ exports.list = function(req, res){
 	    });
     }
 
-  res.render('list',{title:"Hub // User list",numConnections:8,ip:ipAddress});
+  res.render('list',{title:"Hub // User list",numConnections:8,ipAddress:ip});
 };
