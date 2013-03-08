@@ -65,40 +65,6 @@ socket.sockets.on('connection', function (skt) {
 	});		
 });
 
-
-
-
-/*var client = ioClient.connect('http://localhost:3001');
-client.on('connect', function () {
-  console.log('Client ::  connected!');
-});
-
-client.on('hello',function(data){
-	console.log('Client ::  socket said hello with '+data.hello);
-	
-	socket.sockets.emit('broadcast');
-	
-});
-
-client.on('broadcast',function(data){
-	console.log('Client ::  socket broadcast something');
-	
-	
-});*/
-
-
-/*var net = require('net');
-var client = net.connect({port: 3001},
-    function() { //'connect' listener
-	  console.log('client connected');
-	  client.write('world!\r\n');
-});
-
-client.on('error', function(data) {
-  console.log(data.toString());
-});*/
-
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
-  //console.log(hub);
 });
