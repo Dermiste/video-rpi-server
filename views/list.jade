@@ -2,6 +2,10 @@ extends layout
 
 block content
   h1= title
-  p #{numConnections} RPi are connected.
+  p 
+   span(id='numConnections') #{numConnections}
+   span  RPi are connected.
   br
-  input(type="button",value="Play video")
+  input(id="playButton",type="button",value="Play video")
+  h3 Logs
+  p(id='logs')

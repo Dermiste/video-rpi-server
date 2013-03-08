@@ -33,24 +33,42 @@ app.configure('development', function(){
 });
 
 
-app.get('/hub/connect',hub.connect);
 app.get('/hub/list',hub.list);
 
 var socket = ioSocket.listen(3001);
 
+socket.notifyNumUserChanged = function(){
+	var i =  0;
+	for (var o in socket.open){
+		i++;
+	}
+	socket.sockets.in('rpi').emit('numUserChanged',{numUsers:i});
+}
+
+socket.playEverywhere = function(){
+	socket.sockets.in('rpi').emit('play');
+}
+
 socket.sockets.on('connection', function (skt) {
-	console.log('Socket :: connextion!');
-	 skt.emit('hello', { hello: 'world' });
-	 skt.broadcast.emit('hello',{hello:'again'});
-	  /*socket.emit('news', { hello: 'world' });
-	  socket.on('my other event', function (data) {
-	    console.log(data);
-	  });*/
+	socket.notifyNumUserChanged();
+	 
+	skt.on('disconnect', function (skt) {
+		socket.notifyNumUserChanged();
+	});
+	skt.on('play', function (skt) {
+		socket.playEverywhere();
+	});	
+	
+	skt.on('joinRoom', function (data) {	
+		skt.join(data.room);
+		socket.notifyNumUserChanged();
+	});		
 });
 
 
 
-var client = ioClient.connect('http://localhost:3001');
+
+/*var client = ioClient.connect('http://localhost:3001');
 client.on('connect', function () {
   console.log('Client ::  connected!');
 });
@@ -66,7 +84,7 @@ client.on('broadcast',function(data){
 	console.log('Client ::  socket broadcast something');
 	
 	
-});
+});*/
 
 
 /*var net = require('net');
