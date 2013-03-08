@@ -11,7 +11,7 @@ exports.list = function(req, res){
 	    var alias=0;
 	    ifaces[dev].forEach(function(details){
 		    if (details.family=='IPv4') {
-		      console.log(dev+(alias?':'+alias:''),details.address);
+		      //console.log(dev+(alias?':'+alias:''),details.address);
 		      ip = details.address;
 		      ++alias;
 		    }
