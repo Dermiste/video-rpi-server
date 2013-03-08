@@ -18,5 +18,5 @@ exports.list = function(req, res){
 	    });
     }
 
-  res.render('list',{title:"Hub // User list",numConnections:8,ipAddress:ip});
+  res.render('list',{title:"Hub // User list",numConnections:"-",ipAddress:ip});
 };
