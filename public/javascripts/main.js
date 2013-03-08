@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	var ip = #{ipAddress}
-	var socket = io.connect('http://localhost:3001');
+	//var ip = #{ipAddress}
+	var socket = io.connect('http://'+ip+':3001');
 	socket.on('numUserChanged',function(data){
 		$('#numConnections').html(data.numUsers);
 	});	
