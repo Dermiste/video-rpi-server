@@ -1,16 +1,19 @@
 $(document).ready(function(){
-	//var ip = #{ipAddress}
 	var socket = io.connect('http://'+ip+':3001');
 	socket.on('numUserChanged',function(data){
-		$('#numConnections').html(data.numUsers);
+		console.log(data);	
+		var rpiList = $('<ul/>');
+		$.each(data.users,function(index,value){
+			var li = $('<li/>')
+        		.appendTo(rpiList)
+        		.text(value);
+        	console.log("li id : "+value);	
+		});
+		$("#userList").html(rpiList);
+		$("#numConnected").text(data.users.length);
 	});	
 	socket.on('connect',function(data){
-		//console.log('join room');
-		var random = Math.random();
-		//if (random > 0.5)
-			socket.emit('joinRoom',{room:'admin'});
-		//else
-			//socket.emit('joinRoom',{room:'admin'});
+		socket.emit('joinRoom',{room:'admin'});
 	});		
 	socket.on('play',function(data){
 		console.log('play received');

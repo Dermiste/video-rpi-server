@@ -35,44 +35,50 @@ app.configure('development', function(){
 
 app.get('/hub/list',hub.list);
 
-var socket = ioSocket.listen(3001);
+var iosocket = ioSocket.listen(3001);
 
-socket.notifyNumUserChanged = function(){
-	var totalClients = socket.sockets.manager.rooms['/rpi'] ? socket.sockets.manager.rooms['/rpi'].length : 0;
-	
-	//console.log(socket.sockets.manager.rooms);
-	//console.log("---------");
-	socket.sockets.in('rpi').emit('numUserChanged',{numUsers:totalClients});
-	socket.sockets.in('admin').emit('numUserChanged',{numUsers:totalClients});
+iosocket.notifyNumUserChanged = function(){	
+	var users = [];
+	if (iosocket.sockets.manager.rooms['/rpi']){
+		iosocket.sockets.manager.rooms['/rpi'].forEach(function (id) {
+			users.push(iosocket.sockets.socket(id).rpiID);
+		});
+	}
+	iosocket.sockets.in('rpi').emit('numUserChanged',{users:users});
+	iosocket.sockets.in('admin').emit('numUserChanged',{users:users});
 }
 
-socket.playEverywhere = function(){
+iosocket.playEverywhere = function(){
 	socket.sockets.in('rpi').emit('play');
 }
 
-socket.sockets.on('connection', function (skt) {
-	socket.notifyNumUserChanged();
+iosocket.sockets.on('connection', function (skt) {
+	iosocket.notifyNumUserChanged();
 	 
 	skt.on('disconnect', function (skt) {
-		socket.notifyNumUserChanged();
+		iosocket.notifyNumUserChanged();
 	});
 	skt.on('close', function (skt) {
-		socket.notifyNumUserChanged();
+		iosocket.notifyNumUserChanged();
 	});
 	
 	skt.on('play', function (skt) {
-		socket.playEverywhere();
+		iosocket.playEverywhere();
 	});	
 	
 	skt.on('updateUserNum', function (skt) {
-		socket.notifyNumUserChanged();
+		iosocket.notifyNumUserChanged();
 	});		
 	
 	skt.on('joinRoom', function (data) {	
-		console.log('joinRoom ->'+data.room);
+		console.log('joinRoom -> '+data.room);
 		skt.join(data.room);
-		socket.notifyNumUserChanged();
-	});		
+		iosocket.notifyNumUserChanged();
+	});	
+	skt.on('setID', function (data) {	
+		console.log('setID -> '+data.id);
+		skt.rpiID = data.id;
+	});			
 });
 
 
