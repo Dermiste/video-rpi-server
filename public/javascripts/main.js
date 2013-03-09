@@ -8,7 +8,7 @@ $(document).ready(function(){
 		//console.log('join room');
 		var random = Math.random();
 		//if (random > 0.5)
-			socket.emit('joinRoom',{room:'rpi'});
+			socket.emit('joinRoom',{room:'admin'});
 		//else
 			//socket.emit('joinRoom',{room:'admin'});
 	});		
