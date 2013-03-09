@@ -69,6 +69,7 @@ socket.sockets.on('connection', function (skt) {
 	});		
 	
 	skt.on('joinRoom', function (data) {	
+		console.log('joinRoom ->'+data.room);
 		skt.join(data.room);
 		socket.notifyNumUserChanged();
 	});		
