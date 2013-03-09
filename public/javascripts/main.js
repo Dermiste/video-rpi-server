@@ -7,10 +7,10 @@ $(document).ready(function(){
 	socket.on('connect',function(data){
 		//console.log('join room');
 		var random = Math.random();
-		if (random > 0.5)
+		//if (random > 0.5)
 			socket.emit('joinRoom',{room:'rpi'});
-		else
-			socket.emit('joinRoom',{room:'admin'});
+		//else
+			//socket.emit('joinRoom',{room:'admin'});
 	});		
 	socket.on('play',function(data){
 		console.log('play received');
@@ -19,4 +19,7 @@ $(document).ready(function(){
 	$("#playButton").click(function(){
 		socket.emit('play');
 	});
+	$("#updateUserNumButton").click(function(){
+		socket.emit('updateUserNum');
+	});	
 });

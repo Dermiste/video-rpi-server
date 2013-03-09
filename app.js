@@ -38,8 +38,10 @@ app.get('/hub/list',hub.list);
 var socket = ioSocket.listen(3001);
 
 socket.notifyNumUserChanged = function(){
-	var totalClients = socket.rooms['/rpi'] ? socket.rooms['/rpi'].length : 0;
+	var totalClients = socket.sockets.manager.rooms['/rpi'] ? socket.sockets.manager.rooms['/rpi'].length : 0;
 	
+	//console.log(socket.sockets.manager.rooms);
+	//console.log("---------");
 	socket.sockets.in('rpi').emit('numUserChanged',{numUsers:totalClients});
 	socket.sockets.in('admin').emit('numUserChanged',{numUsers:totalClients});
 }
@@ -54,16 +56,25 @@ socket.sockets.on('connection', function (skt) {
 	skt.on('disconnect', function (skt) {
 		socket.notifyNumUserChanged();
 	});
+	skt.on('close', function (skt) {
+		socket.notifyNumUserChanged();
+	});
+	
 	skt.on('play', function (skt) {
 		socket.playEverywhere();
 	});	
 	
+	skt.on('updateUserNum', function (skt) {
+		socket.notifyNumUserChanged();
+	});		
+	
 	skt.on('joinRoom', function (data) {	
-		//console.log("app.js a client just joined the "+data.room+" room");
 		skt.join(data.room);
 		socket.notifyNumUserChanged();
 	});		
 });
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
