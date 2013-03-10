@@ -49,7 +49,7 @@ iosocket.notifyNumUserChanged = function(){
 }
 
 iosocket.playEverywhere = function(){
-	socket.sockets.in('rpi').emit('play');
+	iosocket.sockets.in('rpi').emit('play');
 }
 
 iosocket.sockets.on('connection', function (skt) {
