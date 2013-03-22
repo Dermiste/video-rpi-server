@@ -22,6 +22,12 @@ $(document).ready(function(){
 	$("#playButton").click(function(){
 		socket.emit('play');
 	});
+	$("#pauseButton").click(function(){
+		socket.emit('pause');
+	});
+	$("#stopButton").click(function(){
+		socket.emit('stop');
+	});		
 	$("#updateUserNumButton").click(function(){
 		socket.emit('updateUserNum');
 	});	

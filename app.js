@@ -52,6 +52,14 @@ iosocket.playEverywhere = function(){
 	iosocket.sockets.in('rpi').emit('play');
 }
 
+iosocket.playEverywhere = function(){
+	iosocket.sockets.in('rpi').emit('pause');
+}
+
+iosocket.playEverywhere = function(){
+	iosocket.sockets.in('rpi').emit('stop');
+}
+
 iosocket.sockets.on('connection', function (skt) {
 	iosocket.notifyNumUserChanged();
 	 
@@ -65,6 +73,14 @@ iosocket.sockets.on('connection', function (skt) {
 	skt.on('play', function (skt) {
 		iosocket.playEverywhere();
 	});	
+	
+	skt.on('pause', function (skt) {
+		iosocket.pauseEverywhere();
+	});	
+	
+	skt.on('stop', function (skt) {
+		iosocket.stopEverywhere();
+	});			
 	
 	skt.on('updateUserNum', function (skt) {
 		iosocket.notifyNumUserChanged();
