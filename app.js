@@ -52,11 +52,11 @@ iosocket.playEverywhere = function(){
 	iosocket.sockets.in('rpi').emit('play');
 }
 
-iosocket.playEverywhere = function(){
+iosocket.pauseEverywhere = function(){
 	iosocket.sockets.in('rpi').emit('pause');
 }
 
-iosocket.playEverywhere = function(){
+iosocket.stopEverywhere = function(){
 	iosocket.sockets.in('rpi').emit('stop');
 }
 
