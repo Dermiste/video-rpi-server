@@ -36,6 +36,8 @@ app.configure('development', function(){
 app.get('/hub/list',hub.list);
 
 var iosocket = ioSocket.listen(3001);
+var loopInterval = -1;
+
 
 iosocket.notifyNumUserChanged = function(){	
 	var users = [];
@@ -72,6 +74,12 @@ iosocket.sockets.on('connection', function (skt) {
 	
 	skt.on('play', function (skt) {
 		iosocket.playEverywhere();
+		
+		if (loopInterval){
+			clearInterval(loopInterval);
+			loopInterval = setInterval(iosocket.playEverywhere,185000);
+		}
+		
 	});	
 	
 	skt.on('pause', function (skt) {
@@ -79,6 +87,10 @@ iosocket.sockets.on('connection', function (skt) {
 	});	
 	
 	skt.on('stop', function (skt) {
+		if (loopInterval){
+			clearInterval(loopInterval);
+		}	
+	
 		iosocket.stopEverywhere();
 	});			
 	
